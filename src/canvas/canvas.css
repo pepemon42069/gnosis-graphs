@@ -1,0 +1,154 @@
+.canvas-view {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  /* Keep React Flow's chrome (dots, handles, connection line, labels) on the
+     midnight + neon palette by mapping its vars onto our tokens. Selection is
+     pink (primary); connect affordances (handles, connection line) are cyan. */
+  --xy-background-pattern-dots-color: color-mix(in srgb, var(--border) 70%, transparent);
+  --xy-edge-stroke: var(--muted);
+  --xy-edge-stroke-selected: var(--accent);
+  --xy-connectionline-stroke: var(--accent-2);
+  --xy-handle-background-color: var(--accent-2);
+  --xy-handle-border-color: var(--surface);
+  --xy-edge-label-background-color: var(--surface);
+  --xy-edge-label-color: var(--text);
+  --xy-selection-background-color: var(--accent-soft);
+  --xy-selection-border: 1px dotted var(--accent);
+  --xy-attribution-background-color: transparent;
+}
+
+/* Handles read --accent via the vars above; add a restrained glow on the
+   connect target so the connection affordance stays cyberpunk, not loud. */
+.canvas-view .react-flow__handle {
+  width: 7px;
+  height: 7px;
+}
+
+.canvas-view .react-flow__handle-connecting,
+.canvas-view .react-flow__handle:hover {
+  box-shadow: var(--glow-cyan);
+}
+
+/* Shown only once placements have loaded and the graph is truly empty; the
+   delay keeps it from flashing during graph-to-graph navigation. */
+.canvas-empty-hint {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  font-size: 13px;
+  color: var(--muted);
+  opacity: 0;
+  animation: hint-in 400ms ease-out 600ms forwards;
+}
+
+@keyframes hint-in {
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .canvas-empty-hint {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+.node-card {
+  min-width: 140px;
+  max-width: 320px;
+  padding: 8px 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--border);
+  border-radius: 8px;
+  /* Node text in the pixel/terminal font, like the rest of the chrome. */
+  font-family: var(--font-pixel);
+  font-size: 15px;
+  box-shadow: var(--shadow-1);
+  transition:
+    border-color 120ms ease,
+    box-shadow 120ms ease;
+}
+
+.node-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+  box-shadow: var(--glow), var(--shadow-1);
+}
+
+.node-card--selected {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-glow), 0 0 0 4px var(--accent-soft), var(--shadow-1);
+}
+
+.node-card-header {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.node-card-icon {
+  font-size: 12px;
+}
+
+.node-card-title {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.node-card-badge {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-family: var(--font-display);
+  font-size: 10px;
+  color: var(--accent-3);
+  white-space: nowrap;
+}
+
+.node-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.node-card-tag {
+  font-size: 12px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--accent-2-soft);
+  color: var(--accent-2);
+}
+
+.node-card-excerpt {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--muted);
+  max-height: 96px;
+  overflow: hidden;
+  pointer-events: none;
+  white-space: pre-wrap;
+}
+
+.relation-edge-label {
+  position: absolute;
+  font-family: var(--font-pixel);
+  font-size: 12px;
+  padding: 0 4px;
+  border-radius: 4px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  pointer-events: all;
+}
+
+.relation-edge-label--selected {
+  font-weight: 600;
+  border-color: var(--accent);
+  box-shadow: var(--glow);
+}

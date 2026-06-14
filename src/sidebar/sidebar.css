@@ -1,0 +1,326 @@
+.sidebar {
+  width: 248px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  border-right: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.sidebar--collapsed {
+  width: 44px;
+  align-items: center;
+}
+
+.sidebar-icon {
+  display: grid;
+  place-items: center;
+  padding: 4px 8px;
+}
+
+/* Anchors the rail's bottom group: gear directly above the expand chevron. */
+.sidebar-icon--push {
+  margin-top: auto;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 8px 0;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.sidebar-brand-icon {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  box-shadow: var(--glow);
+}
+
+.sidebar-item--root {
+  font-weight: 700;
+}
+
+/* Two framed, independently-scrolling panes (Nodes / Files), each ~half. */
+.sidebar-pane {
+  flex: 1 1 50%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.sidebar-pane-header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--border);
+  background: var(--chip);
+}
+
+.sidebar-pane-label {
+  font-family: var(--font-display);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Creation affordance (+ New file) — lime, per the neon role split. */
+.sidebar-pane-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  padding: 2px 6px;
+  border: none;
+  border-radius: 4px;
+  background: none;
+  color: var(--accent-3);
+  cursor: pointer;
+}
+
+.sidebar-pane-action:hover {
+  background: var(--accent-3-soft);
+  box-shadow: var(--glow-lime);
+}
+
+.sidebar-pane-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 6px;
+}
+
+.sidebar-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sidebar-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.sidebar-empty {
+  margin: 0;
+  padding: 2px 6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* VS Code-style indent guide: a faint pink-tinted vertical line per level. */
+.sidebar-list--nested {
+  padding-left: 14px;
+  margin-left: 7px;
+  border-left: 1px solid var(--accent-soft);
+}
+
+.sidebar-row {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.tree-disclosure {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 22px;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.tree-disclosure:hover:enabled {
+  color: var(--text);
+  background: var(--chip);
+}
+
+.tree-disclosure:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.tree-empty {
+  padding: 2px 8px;
+  font-family: var(--font-pixel);
+  font-size: 13px;
+  font-style: italic;
+  color: var(--muted);
+}
+
+.tree-leaf {
+  margin-left: 18px;
+}
+
+.sidebar-item {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  font: inherit;
+  font-size: 13px;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 6px;
+  background: none;
+  color: var(--text);
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Leading folder/file glyph rides the row baseline and truncates with the label. */
+.sidebar-leaf-icon {
+  flex-shrink: 0;
+  margin-right: 6px;
+  vertical-align: -2px;
+  color: var(--muted);
+}
+
+.sidebar-item:hover {
+  background: var(--chip);
+}
+
+.sidebar-item:hover .sidebar-leaf-icon {
+  color: var(--text);
+}
+
+/* Active row: pink left-accent rail + a restrained glow. */
+.sidebar-item--active {
+  background: var(--accent-soft);
+  box-shadow: inset 2px 0 0 var(--accent), var(--glow);
+  color: var(--text);
+}
+
+.sidebar-item--active .sidebar-leaf-icon {
+  color: var(--accent);
+}
+
+.sidebar-row-action {
+  display: grid;
+  place-items: center;
+  padding: 3px;
+  border: none;
+  border-radius: 4px;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+  visibility: hidden;
+}
+
+.sidebar-row:hover .sidebar-row-action,
+.sidebar-row:focus-within .sidebar-row-action {
+  visibility: visible;
+}
+
+.sidebar-row-action:hover {
+  color: var(--text);
+  background: var(--chip);
+}
+
+.sidebar-row-action--danger:hover {
+  color: var(--danger);
+}
+
+/* Multi-select checkbox: hidden until the row is hovered or the box is ticked. */
+.sidebar-check {
+  flex-shrink: 0;
+  width: 13px;
+  height: 13px;
+  margin: 0 2px;
+  cursor: pointer;
+  visibility: hidden;
+}
+
+.sidebar-row:hover .sidebar-check,
+.sidebar-row:focus-within .sidebar-check,
+.sidebar-check:checked {
+  visibility: visible;
+}
+
+.sidebar-bulk {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 2px 4px;
+}
+
+.sidebar-bulk-action {
+  font: inherit;
+  font-size: 13px;
+  padding: 2px 6px;
+  border: none;
+  border-radius: 4px;
+  background: none;
+  color: var(--danger);
+  cursor: pointer;
+}
+
+.sidebar-bulk-action:hover {
+  background: var(--chip);
+}
+
+.sidebar-nav {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.sidebar-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font: inherit;
+  font-size: 15px;
+  text-align: left;
+  padding: 5px 8px;
+  border: none;
+  border-radius: 6px;
+  background: none;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.sidebar-nav-item:hover {
+  background: var(--chip);
+}
+
+.sidebar-nav-item--muted {
+  color: var(--muted);
+}
+
+.sidebar-nav-item--muted:hover {
+  color: var(--text);
+}

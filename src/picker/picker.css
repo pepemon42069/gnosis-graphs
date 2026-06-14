@@ -1,0 +1,131 @@
+.picker-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgb(0 0 0 / 0.35);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.picker-palette {
+  margin-top: 20vh;
+  width: 520px;
+  max-width: calc(100vw - 32px);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow:
+    var(--shadow-2),
+    var(--glow);
+  overflow: hidden;
+  animation: picker-rise 140ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .picker-palette {
+    animation: none;
+  }
+}
+
+@keyframes picker-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.picker-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  color: var(--muted);
+}
+
+.picker-search-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.picker-input {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  font-family: var(--font-pixel);
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+  border: none;
+  background: none;
+  color: var(--text);
+  outline: none;
+}
+
+.picker-input::placeholder {
+  color: var(--muted);
+}
+
+.picker-rows {
+  max-height: 320px;
+  overflow-y: auto;
+  border-top: 1px solid var(--border);
+}
+
+.picker-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 14px;
+  font-family: var(--font-pixel);
+  font-size: 1rem;
+  letter-spacing: 0.01em;
+  text-align: left;
+  border: none;
+  background: none;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.picker-row--active {
+  background: var(--accent-soft);
+  color: var(--text);
+  box-shadow:
+    inset 2px 0 0 var(--accent),
+    var(--glow);
+}
+
+.picker-row--active .picker-row-title {
+  color: var(--accent);
+  text-shadow: 0 0 0.5rem color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+.picker-row--create:not(:first-child) {
+  border-top: 1px solid var(--border);
+}
+
+.picker-row-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.picker-row-title {
+  overflow-wrap: anywhere;
+}
+
+.picker-row-type {
+  margin-left: auto;
+  font-size: 0.82rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.picker-row--active .picker-row-type {
+  color: color-mix(in srgb, var(--accent) 75%, var(--muted));
+}

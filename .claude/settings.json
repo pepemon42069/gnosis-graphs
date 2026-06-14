@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(pnpm *)",
+      "Bash(pnpm)",
+      "Bash(node *)",
+      "Bash(tsc *)",
+      "Bash(ls*)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git show*)",
+      "Bash(git branch*)",
+      "Bash(git rev-parse*)"
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash .claude/statusline.sh",
+    "padding": 0
+  },
+  "fileCheckpointingEnabled": true,
+  "showTurnDuration": true,
+  "showThinkingSummaries": true,
+  "terminalProgressBarEnabled": true,
+  "spinnerTipsEnabled": true,
+  "tui": "fullscreen",
+  "enableWorkflows": true,
+  "workflowKeywordTriggerEnabled": true,
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path // .tool_response.filePath // empty' | { read -r f; case \"$f\" in *.ts|*.tsx|*.js|*.jsx|*.mjs|*.cjs) pnpm exec eslint --fix \"$f\";; esac; } 2>/dev/null || true",
+            "statusMessage": "eslint --fix"
+          }
+        ]
+      }
+    ]
+  }
+}

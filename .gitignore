@@ -1,0 +1,48 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+dist-ssr/
+build/
+*.local
+*.tsbuildinfo
+
+# VitePress
+docs/.vitepress/dist/
+docs/.vitepress/cache/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+
+# Local tooling — ignore .claude/ runtime, but keep curated subtrees + shared settings.
+.claude/*
+!.claude/skills/
+!.claude/commands/
+!.claude/workflows/
+!.claude/settings.json
+# ...except local-only runtime that must stay out of version control.
+.claude/settings.local.json
+.claude/statusline.sh
+
+# Self-hosted server runtime (docker-compose volume mounts) — anchored to the
+# repo root so they don't swallow source dirs like src/data/ or src/data/files/.
+/data/
+/files/
+/snapshots/
+
+# local Notes directory
+notes/

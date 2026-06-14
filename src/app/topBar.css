@@ -1,0 +1,47 @@
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 5px 12px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.top-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.top-bar-sep {
+  color: var(--border);
+  user-select: none;
+}
+
+.top-bar-actions {
+  justify-self: end;
+  display: flex;
+  gap: 4px;
+}
+
+.top-bar-icon {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+  padding: 4px 8px;
+}
+
+/* A toolbar toggle that's currently on (e.g. an active tag filter). */
+.top-bar-icon--active {
+  color: var(--accent-2);
+}
+
+.top-bar-icon-count {
+  margin-left: 4px;
+  font-family: var(--font-pixel);
+  font-size: 13px;
+  line-height: 1;
+  color: var(--accent-2);
+}

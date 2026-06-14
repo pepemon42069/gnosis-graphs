@@ -1,0 +1,196 @@
+.source-page {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+.source-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.source-back {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.source-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.source-apply {
+  flex-shrink: 0;
+}
+
+.source-body {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  display: flex;
+}
+
+.source-editor-pane {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+}
+
+.source-editor-pane > .panel-code-editor {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Error/confirm surfaces float over the editor's bottom edge. */
+.source-panel {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  max-height: 50%;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow-2);
+}
+
+.source-panel--error {
+  border-color: var(--danger);
+  box-shadow:
+    var(--shadow-2),
+    0 0 0.5rem color-mix(in srgb, var(--danger) 32%, transparent);
+}
+
+.source-panel--confirm {
+  border-color: var(--accent);
+  box-shadow:
+    var(--shadow-2),
+    var(--glow);
+}
+
+.source-message {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.source-error-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.source-error {
+  display: flex;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.source-error-line {
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--danger);
+}
+
+.source-error-message {
+  color: var(--text);
+}
+
+.source-confirm-list {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 13px;
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.source-confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* CodeMirror chrome retheme onto the app tokens — same approach as doc.css. */
+
+/* DSL editor in IBM Plex Mono so column alignment is preserved. */
+.source-page .cm-editor .cm-scroller {
+  font-family: var(--font-mono);
+  font-size: 15px;
+}
+
+.source-page .cm-editor .cm-panels {
+  background: var(--surface);
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+}
+
+.source-page .cm-editor .cm-textfield {
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.source-page .cm-editor .cm-textfield:focus {
+  border-color: var(--accent);
+  outline: none;
+  box-shadow: var(--glow);
+}
+
+.source-page .cm-editor .cm-button {
+  background-image: none;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.source-page .cm-editor .cm-button:hover {
+  border-color: var(--accent);
+}
+
+.source-page .cm-editor .cm-gutters {
+  background: var(--surface);
+  color: var(--muted);
+  border-right: 1px solid var(--border);
+}
+
+.source-page .cm-editor .cm-activeLineGutter {
+  background: var(--chip);
+}
+
+.source-page .cm-editor .cm-activeLine {
+  background: color-mix(in srgb, var(--chip) 50%, transparent);
+}
+
+.source-page .cm-editor .cm-searchMatch {
+  background: color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.source-page .cm-editor .cm-selectionMatch {
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+}

@@ -1,0 +1,445 @@
+/* Overlay: draws over the main area (top = under the main bar) instead of
+   squeezing the canvas; opening/closing never reflows the viewport. */
+.side-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: var(--shadow-panel);
+  animation: side-panel-in 160ms ease-out;
+}
+
+@keyframes side-panel-in {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.side-panel-resize {
+  position: absolute;
+  left: -2px;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  cursor: col-resize;
+  touch-action: none;
+  user-select: none;
+  z-index: 2;
+}
+
+.side-panel-resize:hover,
+.side-panel-resize:active {
+  background: var(--accent);
+  box-shadow: var(--glow);
+}
+
+.panel-header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.panel-title-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.panel-title-input {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.panel-title-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: var(--glow);
+}
+
+/* Inspector-style property rows: muted label left, control right. Field
+   explanations live in native title tooltips — no inline ⓘ chrome. */
+.panel-prop {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 8px;
+  align-items: center;
+}
+
+.panel-prop > :last-child {
+  min-width: 0;
+}
+
+.panel-prop-label {
+  font-family: var(--font-display);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  cursor: help;
+}
+
+.panel-format {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.panel-format .panel-language-select,
+.panel-format .panel-filename-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.panel-summary {
+  font: inherit;
+  font-size: 12px;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
+  resize: vertical;
+  min-height: 40px;
+}
+
+.panel-kind-select,
+.panel-kind-input {
+  font: inherit;
+  font-family: var(--font-pixel);
+  font-size: 15px;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.panel-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+}
+
+/* The inline tag input has no outline of its own; the container carries focus
+   as a single outer neon glow — hide the box's own border so it isn't a second
+   (inner) ring inside the glow. */
+.panel-tags:focus-within {
+  border-color: transparent;
+  box-shadow: var(--glow);
+}
+
+/* Cyan-tinted pill — a single highlight (no border + glow doubling), matching
+   the node-card tags. */
+.panel-tag-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-family: var(--font-pixel);
+  font-size: 14px;
+  line-height: 1.1;
+  padding: 1px 3px 1px 8px;
+  border-radius: 999px;
+  background: var(--accent-2-soft);
+  color: var(--accent-2);
+}
+
+.panel-tag-remove {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 2px;
+  border: none;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.panel-tag-remove:hover {
+  color: var(--danger);
+}
+
+.panel-tag-input {
+  flex: 1;
+  min-width: 80px;
+  font: inherit;
+  font-size: 12px;
+  padding: 2px;
+  border: none;
+  background: none;
+  color: var(--text);
+  outline: none;
+}
+
+.panel-appears {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.panel-appears-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.panel-appears-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 14px;
+  line-height: 1.1;
+  padding: 2px 8px 2px 6px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--chip);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.panel-appears-chip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: var(--glow);
+}
+
+.panel-appears-chip--parent {
+  background: none;
+  color: var(--muted);
+  cursor: default;
+}
+
+.panel-appears-chip--parent:hover {
+  border-color: var(--border);
+  color: var(--muted);
+  box-shadow: none;
+}
+
+.panel-appears-empty {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* Layout-only modifiers over .ui-button. */
+.panel-place-button {
+  align-self: flex-start;
+}
+
+/* Icon buttons sit chrome-side: align the svg, keep accessible name on the button. */
+.panel-open-editor {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.panel-delete-button {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 6px;
+  border: none;
+  border-radius: 6px;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.panel-delete-button:hover {
+  color: var(--danger);
+  background: var(--chip);
+}
+
+.panel-language-select {
+  font: inherit;
+  font-family: var(--font-pixel);
+  font-size: 15px;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.panel-payload {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* The horizontal divider between the panel's two halves: metadata | content. */
+.panel-payload-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+/* Layout-only modifier over .ui-segment. */
+.panel-view-switch {
+  width: 150px;
+  flex-shrink: 0;
+}
+
+.panel-preview {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  padding: 0 12px 12px;
+  overflow: auto;
+  font-size: 13px;
+}
+
+.panel-preview-code,
+.panel-preview-text {
+  font-family: var(--font-mono);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.panel-preview-prose > :first-child {
+  margin-top: 0;
+}
+
+.panel-preview-prose pre {
+  padding: 8px;
+  border-radius: 6px;
+  background: var(--chip);
+  overflow: auto;
+}
+
+.panel-preview-prose code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.panel-preview-prose blockquote {
+  margin: 0;
+  padding-left: 10px;
+  border-left: 3px solid var(--border);
+  color: var(--muted);
+}
+
+.panel-code-editor {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-code-editor .cm-editor {
+  flex: 1;
+  min-height: 0;
+  font-size: 15px;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* Code editor in IBM Plex Mono so column alignment holds. Rendered
+   preview/markdown stays IBM Plex Sans for reading. */
+.panel-code-editor .cm-scroller {
+  overflow: auto;
+  font-family: var(--font-mono);
+}
+
+.panel-code-editor .cm-editor .cm-placeholder {
+  color: var(--muted);
+}
+
+/* CM's base theme hardcodes a light-mode black caret and lands in a <style>
+   tag injected after this sheet — the extra .cm-editor outranks the tie. */
+.panel-code-editor .cm-editor .cm-content {
+  caret-color: var(--text);
+}
+
+.panel-code-editor .cm-editor .cm-cursor {
+  border-left-color: var(--text);
+}
+
+.panel-link-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+}
+
+.panel-link-input {
+  font: inherit;
+  font-size: 13px;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.panel-link-card {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+}
+
+.panel-link-card-title {
+  font-size: 13px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.panel-link-card-domain {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* File-less node: prompt to create a file or attach a link. */
+.panel-empty {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+}
+
+.panel-empty-text {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.panel-empty-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

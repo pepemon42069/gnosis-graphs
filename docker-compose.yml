@@ -1,0 +1,14 @@
+services:
+  gnosis:
+    build: .
+    ports:
+      - '8787:8787'
+    volumes:
+      - ./data:/app/data # SQLite database file(s)
+      - ./files:/app/files # workspace files (Phase 1: payload-as-file)
+      - ./snapshots:/app/snapshots # periodic bundle snapshots
+    environment:
+      - PORT=8787
+      - GNOSIS_DB=/app/data/gnosis.db
+      - GNOSIS_STATIC=/app/dist
+    restart: unless-stopped

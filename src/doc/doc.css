@@ -1,0 +1,304 @@
+.doc-page {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+.doc-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.doc-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.doc-title {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  padding: 7px 8px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: none;
+  color: var(--text);
+}
+
+.doc-title:hover {
+  border-color: var(--border);
+  background: var(--bg);
+}
+
+.doc-title:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: var(--bg);
+  box-shadow: var(--glow);
+}
+
+.doc-view-switch {
+  flex-shrink: 0;
+  width: 160px;
+}
+
+.doc-layout-switch {
+  flex-shrink: 0;
+  width: 220px;
+}
+
+.doc-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+
+.doc-body > .panel-link-editor {
+  flex: 1;
+  max-width: 640px;
+}
+
+/* File-less node opened in the doc page: prompt to create a file. */
+.doc-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.doc-empty-text {
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.doc-editor {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Toolbar */
+
+.doc-toolbar {
+  display: flex;
+  gap: 12px;
+  padding: 6px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.doc-toolbar-group {
+  display: flex;
+  gap: 2px;
+}
+
+.doc-toolbar-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 26px;
+  padding: 0 6px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: none;
+  color: var(--text);
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.doc-toolbar-button:hover:enabled {
+  background: var(--chip);
+  color: var(--accent);
+}
+
+.doc-toolbar-button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* Markdown panes — layout switches hide, never unmount (unsaved-edit safety). */
+
+.doc-split {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.doc-split > .doc-editor-pane {
+  min-width: 0;
+  display: flex;
+  border-right: 1px solid var(--border);
+}
+
+.doc-split > .panel-preview {
+  min-width: 0;
+  min-height: 0;
+  padding: 16px;
+  overflow: auto;
+}
+
+.doc-split--write,
+.doc-split--preview {
+  grid-template-columns: 1fr;
+}
+
+.doc-split--write > .panel-preview {
+  display: none;
+}
+
+.doc-split--write > .doc-editor-pane {
+  border-right: none;
+}
+
+.doc-split--preview > .doc-editor-pane {
+  display: none;
+}
+
+/* Code/plaintext panes */
+
+.doc-code {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+}
+
+.doc-code > .doc-editor-pane {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+}
+
+.doc-code--preview > .doc-editor-pane {
+  display: none;
+}
+
+.doc-code > .panel-preview {
+  flex: 1;
+  min-width: 0;
+  padding: 16px;
+  overflow: auto;
+}
+
+.doc-editor-pane > .panel-code-editor {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Status bar */
+
+.doc-statusbar {
+  display: flex;
+  gap: 16px;
+  padding: 4px 16px;
+  border-top: 1px solid var(--border);
+  font-family: var(--font-pixel);
+  font-size: 14px;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
+
+.doc-statusbar-save {
+  margin-left: auto;
+}
+
+.doc-statusbar-save--pending {
+  color: var(--accent);
+  text-shadow: 0 0 0.5rem color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+/* CodeMirror chrome (search panel, gutters, match highlights) ships hardcoded
+   light colors in a <style> tag injected after this sheet — retheme onto the
+   app tokens, with .cm-editor in every selector to outrank the tie. */
+
+/* Code/source editor in IBM Plex Mono. Rendered markdown (MarkdownDoc) stays
+   IBM Plex Sans for long-form reading. */
+.doc-page .cm-editor .cm-scroller {
+  font-family: var(--font-mono);
+  font-size: 15px;
+}
+
+.doc-page .cm-editor .cm-panels {
+  background: var(--surface);
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+}
+
+.doc-page .cm-editor .cm-panel.cm-search {
+  padding: 6px 10px;
+}
+
+.doc-page .cm-editor .cm-panel.cm-search label {
+  color: var(--muted);
+}
+
+.doc-page .cm-editor .cm-textfield {
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.doc-page .cm-editor .cm-button {
+  background-image: none;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.doc-page .cm-editor .cm-button:active {
+  background-image: none;
+  background: var(--chip);
+}
+
+.doc-page .cm-editor .cm-panel.cm-search [name='close'] {
+  color: var(--muted);
+}
+
+.doc-page .cm-editor .cm-gutters {
+  background: var(--surface);
+  color: var(--muted);
+  border-right: 1px solid var(--border);
+}
+
+.doc-page .cm-editor .cm-activeLineGutter {
+  background: var(--chip);
+}
+
+.doc-page .cm-editor .cm-activeLine {
+  background: color-mix(in srgb, var(--chip) 50%, transparent);
+}
+
+.doc-page .cm-editor .cm-searchMatch {
+  background: color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.doc-page .cm-editor .cm-searchMatch.cm-searchMatch-selected {
+  background: color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+.doc-page .cm-editor .cm-selectionMatch {
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+}

@@ -1,0 +1,133 @@
+/* Lives inside the main bar's left grid cell — the bar owns the row chrome. */
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  /* Pixel chrome, matching the sidebar nav / top-bar controls. */
+  font-family: var(--font-pixel);
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.breadcrumbs-link {
+  font: inherit;
+  padding: 1px 4px;
+  border: none;
+  border-radius: 6px;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.breadcrumbs-link:hover {
+  color: var(--accent);
+}
+
+/* The current graph is the active crumb — pink neon like other active chrome. */
+.breadcrumbs-current {
+  padding: 1px 4px;
+  color: var(--accent);
+  text-shadow: 0 0 0.5rem color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+.breadcrumbs-sep,
+.breadcrumbs-ellipsis {
+  color: var(--muted);
+}
+
+.confirm-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: rgb(0 0 0 / 0.4);
+}
+
+.confirm-dialog {
+  min-width: 280px;
+  max-width: 420px;
+  padding: 16px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: var(--shadow-2);
+  animation: dialog-in 140ms ease-out;
+}
+
+.confirm-message {
+  margin: 0 0 14px;
+  font-size: 13px;
+}
+
+.confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* Prompt = confirm dialog with a text field stacked above the actions. */
+.prompt-dialog {
+  display: flex;
+  flex-direction: column;
+}
+
+.prompt-dialog .confirm-message {
+  margin-bottom: 10px;
+}
+
+.prompt-input {
+  width: 100%;
+  margin-bottom: 14px;
+}
+
+/* The accept is the dialog's one primary action — filled even for danger. */
+.confirm-accept.ui-button--danger {
+  background: var(--danger);
+  color: #ffffff;
+}
+
+.drill-in {
+  animation: drill-in 160ms ease-out;
+}
+
+.drill-out {
+  animation: drill-out 160ms ease-out;
+}
+
+.drill-lateral {
+  animation: drill-lateral 160ms ease-out;
+}
+
+@keyframes drill-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes drill-out {
+  from {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes drill-lateral {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

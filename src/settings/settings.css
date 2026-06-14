@@ -1,0 +1,275 @@
+.settings-backdrop {
+  position: fixed;
+  inset: 0;
+  /* Below the confirm dialog (100), which opens on top for merge/delete. */
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  background: rgb(0 0 0 / 0.4);
+}
+
+.settings-modal {
+  width: 720px;
+  max-width: calc(100vw - 32px);
+  height: min(480px, 80vh);
+  display: flex;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent) 14%, transparent),
+    var(--shadow-2);
+  overflow: hidden;
+  animation: dialog-in 140ms ease-out;
+}
+
+.settings-nav {
+  width: 160px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 8px;
+  border-right: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.settings-nav-item {
+  font-family: var(--font-pixel);
+  font-size: 16px;
+  letter-spacing: 0.01em;
+  text-align: left;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 6px;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.settings-nav-item:hover {
+  color: var(--text);
+  background: var(--chip);
+}
+
+.settings-nav-item--active {
+  color: var(--accent);
+  background: var(--accent-soft);
+  box-shadow: inset 2px 0 0 var(--accent), var(--glow);
+}
+
+.settings-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.settings-content-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px 0;
+}
+
+.settings-content-title {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.settings-rows {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 16px 16px;
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.settings-row--add {
+  margin-top: 6px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+/* Shared primitives in row context: buttons keep their size, inputs stretch. */
+.settings-row .ui-button {
+  flex-shrink: 0;
+}
+
+/* Name box: capped at the 32-char limit so the kind and relation-type tabs show
+   an equal-width field despite kinds carrying an extra icon control. */
+.settings-row .ui-input {
+  flex: 1;
+  min-width: 0;
+  max-width: 32ch;
+}
+
+/* With the name box capped, push usage + tools (and the add-row controls) to
+   the right edge so both tabs line up. */
+.settings-row > .ui-input + * {
+  margin-left: auto;
+}
+
+/* Labeled action groups (Settings → Data): description left, button right. */
+.settings-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.settings-group + .settings-group {
+  margin-top: 14px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.settings-action {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.settings-action-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.settings-action-text strong {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.settings-action-text span {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.settings-action .ui-button {
+  flex-shrink: 0;
+  min-width: 88px;
+}
+
+.settings-color {
+  flex-shrink: 0;
+  width: 28px;
+  height: 26px;
+  padding: 2px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  cursor: pointer;
+}
+
+.settings-icon-input {
+  flex-shrink: 0;
+  width: 36px;
+  font: inherit;
+  font-size: 13px;
+  text-align: center;
+  padding: 4px 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.settings-usage {
+  flex-shrink: 0;
+  min-width: 52px;
+  font-size: 11px;
+  color: var(--muted);
+  text-align: right;
+}
+
+/* The name reads as plain text; its edit box reveals on hover/focus. */
+.settings-name-input {
+  border-color: transparent;
+  background: none;
+}
+
+.settings-row:hover .settings-name-input,
+.settings-name-input:focus {
+  border-color: var(--border);
+  background: var(--bg);
+}
+
+/* Row tools stay hidden until the row is hovered or focused — the list reads
+   as names + usage; editing affordances reveal in place. */
+.settings-row-tools {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  visibility: hidden;
+}
+
+.settings-row:hover .settings-row-tools,
+.settings-row:focus-within .settings-row-tools {
+  visibility: visible;
+}
+
+.settings-tool {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-pixel);
+  font-size: 15px;
+  padding: 2px 5px;
+  border: none;
+  border-radius: 4px;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.settings-tool:hover:not(:disabled) {
+  color: var(--accent);
+  background: var(--chip);
+}
+
+.settings-tool--danger:hover:not(:disabled) {
+  color: var(--danger);
+  background: color-mix(in srgb, var(--danger) 14%, transparent);
+}
+
+.settings-tool:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.settings-error {
+  font-size: 11px;
+  color: var(--danger);
+  white-space: nowrap;
+}
+
+.settings-hint {
+  margin: 0 0 6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.settings-hint--inline {
+  margin: 0;
+}
+
+.settings-status-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+}
+
+.settings-status-row > span:last-child {
+  color: var(--muted);
+}

@@ -1,0 +1,398 @@
+/* === Cyberpunk theme ===================================================
+   DARK is the hero and the default. :root carries the deep-midnight palette
+   over graphite/ash neutrals lit by three neons: cherry-blossom pink (primary
+   — active/selected/focus/brand), cyan (links/handles/info), and lime
+   (creation/subgraph/success). A coherent on-paper LIGHT variant is an opt-in
+   ([data-theme='light']) plus a prefers-color-scheme:light branch, so the
+   existing system/light/dark toggle keeps working — the app OPENS cyberpunk. */
+:root {
+  --bg: #0c0d12;
+  --text: #e8e6ef;
+  --surface: #14151c;
+  --border: #292b3a;
+  --muted: #8b8fa6;
+  --chip: #1b1d28;
+  --accent: #ff5d8f;
+  --danger: #ff4d6d;
+
+  /* Derived from --accent, so one definition serves both themes. */
+  --accent-soft: color-mix(in srgb, var(--accent) 16%, transparent);
+
+  /* Secondary cyberpunk neons. Distinct semantic roles keep three colors from
+     becoming a rainbow: cyan = links/handles/info; lime = creation/subgraph. */
+  --accent-2: #22d3ee;
+  --accent-3: #a6f75b;
+  --accent-2-soft: color-mix(in srgb, var(--accent-2) 16%, transparent);
+  --accent-3-soft: color-mix(in srgb, var(--accent-3) 16%, transparent);
+  --glow-cyan: 0 0 0.5rem color-mix(in srgb, var(--accent-2) 38%, transparent);
+  --glow-lime: 0 0 0.5rem color-mix(in srgb, var(--accent-3) 38%, transparent);
+
+  /* Fonts. IBM Plex throughout: Sans for UI chrome + UPPERCASE labels, Mono for
+     code editors and code preview. --font-display / --font-pixel remain as
+     semantic aliases so their consumers (chrome, labels) need no change. */
+  --font-ui: 'IBM Plex Sans', system-ui, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  --font-display: var(--font-ui);
+  --font-pixel: var(--font-ui);
+
+  /* Neon-tinted elevation + a reusable soft pink glow (restrained, not Vegas). */
+  --glow: 0 0 0.5rem color-mix(in srgb, var(--accent) 38%, transparent);
+  --shadow-glow: 0 0 0 1px color-mix(in srgb, var(--accent) 40%, transparent), var(--glow);
+  --shadow-1: 0 1px 3px rgb(0 0 0 / 0.5);
+  --shadow-2: 0 14px 40px rgb(0 0 0 / 0.6);
+  --shadow-panel: -8px 0 30px rgb(0 0 0 / 0.5);
+
+  /* Syntax palette — neon-on-midnight (functional, multi-hue is fine here). */
+  --code-keyword: #ff5d8f;
+  --code-atom: #f5c451;
+  --code-string: #a6f75b;
+  --code-comment: #6b7088;
+  --code-def: #22d3ee;
+  --code-type: #f5c451;
+  --code-prop: #b78bff;
+
+  font-family: var(--font-ui);
+  line-height: 1.5;
+  color-scheme: dark;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+/* Sakura-on-paper: blush-white surfaces, deeper-pink accent for contrast. */
+:root[data-theme='light'] {
+  --bg: #fbf6f8;
+  --text: #1d1a22;
+  --surface: #ffffff;
+  --border: #e6d6dd;
+  --muted: #6b6470;
+  --chip: #f1e6eb;
+  --accent: #d6386c;
+  --danger: #d12a4f;
+  --accent-2: #0e9bb8;
+  --accent-3: #4f9e1f;
+  --accent-2-soft: color-mix(in srgb, var(--accent-2) 16%, transparent);
+  --accent-3-soft: color-mix(in srgb, var(--accent-3) 16%, transparent);
+  --glow-cyan: 0 0 0.5rem color-mix(in srgb, var(--accent-2) 22%, transparent);
+  --glow-lime: 0 0 0.5rem color-mix(in srgb, var(--accent-3) 22%, transparent);
+  --glow: 0 0 0.5rem color-mix(in srgb, var(--accent) 22%, transparent);
+  --shadow-glow: 0 0 0 1px color-mix(in srgb, var(--accent) 30%, transparent), var(--glow);
+  --shadow-1: 0 1px 3px rgb(40 20 30 / 0.12);
+  --shadow-2: 0 12px 34px rgb(40 20 30 / 0.16);
+  --shadow-panel: -8px 0 24px rgb(40 20 30 / 0.08);
+  --code-keyword: #c01d5e;
+  --code-atom: #a86400;
+  --code-string: #1d8a5e;
+  --code-comment: #9a92a0;
+  --code-def: #1f74c4;
+  --code-type: #a86400;
+  --code-prop: #7a47cc;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) {
+    --bg: #fbf6f8;
+    --text: #1d1a22;
+    --surface: #ffffff;
+    --border: #e6d6dd;
+    --muted: #6b6470;
+    --chip: #f1e6eb;
+    --accent: #d6386c;
+    --danger: #d12a4f;
+    --accent-2: #0e9bb8;
+    --accent-3: #4f9e1f;
+    --accent-2-soft: color-mix(in srgb, var(--accent-2) 16%, transparent);
+    --accent-3-soft: color-mix(in srgb, var(--accent-3) 16%, transparent);
+    --glow-cyan: 0 0 0.5rem color-mix(in srgb, var(--accent-2) 22%, transparent);
+    --glow-lime: 0 0 0.5rem color-mix(in srgb, var(--accent-3) 22%, transparent);
+    --glow: 0 0 0.5rem color-mix(in srgb, var(--accent) 22%, transparent);
+    --shadow-glow: 0 0 0 1px color-mix(in srgb, var(--accent) 30%, transparent), var(--glow);
+    --shadow-1: 0 1px 3px rgb(40 20 30 / 0.12);
+    --shadow-2: 0 12px 34px rgb(40 20 30 / 0.16);
+    --shadow-panel: -8px 0 24px rgb(40 20 30 / 0.08);
+    --code-keyword: #c01d5e;
+    --code-atom: #a86400;
+    --code-string: #1d8a5e;
+    --code-comment: #9a92a0;
+    --code-def: #1f74c4;
+    --code-type: #a86400;
+    --code-prop: #7a47cc;
+    color-scheme: light;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Custom pink selection. */
+::selection {
+  background: color-mix(in srgb, var(--accent) 35%, transparent);
+  color: var(--text);
+}
+
+/* Thin scrollbar; pink thumb on hover (WebKit; Firefox uses scrollbar-color). */
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--accent) 60%, var(--border));
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Static highlight classes (@lezer classHighlighter) — previews share the
+   editor's --code-* palette, so they follow the theme too. */
+.tok-keyword {
+  color: var(--code-keyword);
+}
+
+.tok-atom,
+.tok-bool,
+.tok-number,
+.tok-literal {
+  color: var(--code-atom);
+}
+
+.tok-string,
+.tok-string2 {
+  color: var(--code-string);
+}
+
+.tok-comment,
+.tok-meta {
+  color: var(--code-comment);
+  font-style: italic;
+}
+
+.tok-definition,
+.tok-labelName {
+  color: var(--code-def);
+}
+
+.tok-typeName,
+.tok-className,
+.tok-namespace {
+  color: var(--code-type);
+}
+
+.tok-propertyName,
+.tok-attributeName {
+  color: var(--code-prop);
+}
+
+.tok-heading {
+  color: var(--code-def);
+  font-weight: 600;
+}
+
+.tok-emphasis {
+  font-style: italic;
+}
+
+.tok-strong {
+  font-weight: 600;
+}
+
+.tok-link,
+.tok-url {
+  color: var(--accent-2);
+}
+
+.tok-invalid {
+  color: var(--danger);
+}
+
+body {
+  margin: 0;
+}
+
+/* One focus language everywhere; :where keeps specificity at zero so any
+   component that styles its own focus (e.g. the tag container) still wins. */
+:where(button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent) 70%, transparent);
+  outline-offset: 1px;
+  box-shadow: var(--glow);
+}
+
+/* === Pixel-chrome + neon utilities (area agents consume these) =========== */
+
+/* IBM Plex Sans for nav/buttons/menus/rows. */
+.pixel {
+  font-family: var(--font-pixel);
+  letter-spacing: 0.01em;
+}
+
+/* UPPERCASE tracked label for brand/section/modal titles/badges. */
+.pixel-label {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Pink text with a restrained glow for accent/active/selected chrome. */
+.neon {
+  color: var(--accent);
+  text-shadow: 0 0 0.5rem color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+/* Soft outer glow for accent/active/selected/focus surfaces. */
+.glow {
+  box-shadow: var(--glow);
+}
+
+/* === Atmosphere: scanlines + vignette behind content, very low alpha ===== */
+.app::before,
+.app::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Faint scanline texture — kept low-alpha so text stays legible. */
+.app::before {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgb(0 0 0 / 0.04) 0,
+    rgb(0 0 0 / 0.04) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  opacity: 0.5;
+}
+
+/* Faint pink-tinted vignette. */
+.app::after {
+  background: radial-gradient(
+    120% 120% at 50% 40%,
+    transparent 55%,
+    color-mix(in srgb, var(--accent) 5%, transparent) 100%
+  );
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) .app::before {
+    background-image: repeating-linear-gradient(
+      to bottom,
+      rgb(0 0 0 / 0.02) 0,
+      rgb(0 0 0 / 0.02) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+  }
+}
+:root[data-theme='light'] .app::before {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgb(0 0 0 / 0.02) 0,
+    rgb(0 0 0 / 0.02) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+/* === Orchestrated boot reveal (staggered fade + slide) =================== */
+@keyframes boot-fade-left {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes boot-fade-down {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes boot-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.boot-sidebar {
+  animation: boot-fade-left 360ms ease both;
+  animation-delay: 40ms;
+}
+.boot-topbar {
+  animation: boot-fade-down 360ms ease both;
+  animation-delay: 120ms;
+}
+.boot-canvas {
+  animation: boot-fade 460ms ease both;
+  animation-delay: 220ms;
+}
+
+/* All motion + heavy effects off when the user asks for reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  .app::before,
+  .app::after {
+    display: none;
+  }
+  :where(button, input, select, textarea, [tabindex]):focus-visible {
+    box-shadow: none;
+  }
+}
+
+.app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.app-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+
+.app-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Positioning context for the side-panel overlay. */
+.main-area {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  display: flex;
+}
+
+.canvas-wrap {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+}

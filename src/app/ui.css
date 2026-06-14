@@ -1,0 +1,156 @@
+/* Shared control primitives — components keep only layout in their own css. */
+
+/* One hover/active timing for every interactive control in the app. */
+.ui-button,
+.ui-segment-option,
+.ui-input,
+.sidebar-item,
+.sidebar-nav-item,
+.sidebar-row-action,
+.tree-disclosure,
+.settings-nav-item,
+.settings-tool,
+.context-menu-item,
+.picker-row,
+.breadcrumbs-link,
+.doc-toolbar-button,
+.panel-appears-chip,
+.panel-delete-button,
+.panel-tag-remove {
+  transition:
+    background-color 120ms ease,
+    color 120ms ease,
+    border-color 120ms ease,
+    box-shadow 120ms ease;
+}
+
+.ui-button {
+  font-family: var(--font-pixel);
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  padding: 3px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.ui-button:hover:enabled {
+  border-color: var(--accent);
+  box-shadow: var(--glow);
+}
+
+.ui-button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.ui-button--primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.ui-button--primary:hover:enabled {
+  box-shadow: var(--shadow-glow);
+}
+
+.ui-button--danger {
+  border-color: var(--danger);
+  background: none;
+  color: var(--danger);
+}
+
+.ui-button--danger:hover:enabled {
+  border-color: var(--danger);
+  background: var(--danger);
+  color: var(--bg);
+  box-shadow: none;
+}
+
+.ui-button--ghost {
+  border: none;
+  background: none;
+  color: var(--muted);
+}
+
+.ui-button--ghost:hover:enabled {
+  border: none;
+  color: var(--accent);
+  background: var(--chip);
+  box-shadow: none;
+}
+
+/* Segmented control: mutually exclusive options (format/view/theme pickers). */
+.ui-segment {
+  display: flex;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.ui-segment-option {
+  flex: 1;
+  font-family: var(--font-pixel);
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  padding: 3px 12px;
+  border: none;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.ui-segment-option + .ui-segment-option {
+  border-left: 1px solid var(--border);
+}
+
+.ui-segment-option:hover:not(.ui-segment-option--active) {
+  color: var(--text);
+}
+
+.ui-segment-option--active {
+  background: var(--accent-soft);
+  color: var(--accent);
+  text-shadow: var(--glow);
+}
+
+.ui-input {
+  font-family: var(--font-pixel);
+  font-size: 16px;
+  padding: 3px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.ui-input:focus-visible {
+  border-color: var(--accent);
+  box-shadow: var(--glow);
+}
+
+.ui-section-label {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Entrance for centered modal surfaces (confirm dialog, settings). */
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
