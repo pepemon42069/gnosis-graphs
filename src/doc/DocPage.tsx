@@ -6,6 +6,7 @@ import type { NodeRecord } from '../data/types'
 import { closeOverlay } from '../nav/history'
 import { LinkEditor } from '../panel/LinkEditor'
 import { useTitleCommit } from '../panel/useTitleCommit'
+import { CopyButton } from '../ui/CopyButton'
 import { Icon } from '../ui/Icon'
 import './doc.css'
 
@@ -60,6 +61,7 @@ function DocView({ node }: { node: NodeRecord }) {
           onBlur={title.commit}
           onKeyDown={title.onKeyDown}
         />
+        {file && <CopyButton content={file.content} />}
         {format === 'markdown' && (
           <div className="ui-segment pixel doc-layout-switch" role="group" aria-label="Editor layout">
             {LAYOUTS.map((option) => (

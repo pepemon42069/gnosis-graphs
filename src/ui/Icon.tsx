@@ -100,6 +100,13 @@ const PATHS: Record<string, ReactNode> = {
     </>
   ),
   edit: <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />,
+  copy: (
+    <>
+      <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+      <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+    </>
+  ),
+  check: <path d="M20 6 9 17l-4-4" />,
   branch: (
     <>
       <line x1="6" x2="6" y1="3" y2="15" />

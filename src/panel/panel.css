@@ -350,6 +350,13 @@
   border-bottom: 1px solid var(--border);
 }
 
+/* Keeps the copy button and the view switch grouped on the bar's right edge. */
+.panel-payload-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 /* Layout-only modifier over .ui-segment. */
 .panel-view-switch {
   width: 150px;

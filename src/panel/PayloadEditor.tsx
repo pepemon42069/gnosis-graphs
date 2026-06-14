@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react'
 import { useSessionStore } from '../app/store'
 import { runCommand, useFile } from '../data/client'
 import type { NodeRecord } from '../data/types'
+import { CopyButton } from '../ui/CopyButton'
 import { LinkEditor } from './LinkEditor'
 import { PayloadPreview } from './PayloadPreview'
 
@@ -69,18 +70,21 @@ function FilePayload({
       {/* Horizontal section bar: splits metadata above from content below. */}
       <div className="panel-payload-bar">
         <span className="panel-prop-label">Content</span>
-        <div className="ui-segment pixel panel-view-switch" role="group" aria-label="Payload view">
-          {VIEWS.map((option) => (
-            <button
-              key={option}
-              type="button"
-              aria-pressed={view === option}
-              className={`ui-segment-option${view === option ? ' ui-segment-option--active' : ''}`}
-              onClick={() => setView(option)}
-            >
-              {option}
-            </button>
-          ))}
+        <div className="panel-payload-bar-actions">
+          <CopyButton content={file.content} />
+          <div className="ui-segment pixel panel-view-switch" role="group" aria-label="Payload view">
+            {VIEWS.map((option) => (
+              <button
+                key={option}
+                type="button"
+                aria-pressed={view === option}
+                className={`ui-segment-option${view === option ? ' ui-segment-option--active' : ''}`}
+                onClick={() => setView(option)}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
       {view === 'preview' ? (

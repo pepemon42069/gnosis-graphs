@@ -86,6 +86,14 @@ interface SessionState {
 
 const EMPTY_SELECTION: Selection = { nodeIds: [], edgeIds: [] }
 
+// Right panel: defaults to half the viewport for a roomy payload view, and can
+// be dragged wider while always leaving a strip of canvas visible.
+const PANEL_MIN_WIDTH = 260
+const viewportWidth = () => (typeof window === 'undefined' ? 1280 : window.innerWidth)
+const defaultPanelWidth = () => Math.round(viewportWidth() / 2)
+const clampPanelWidth = (width: number) =>
+  Math.max(PANEL_MIN_WIDTH, Math.min(viewportWidth() - 200, width))
+
 export const useSessionStore = create<SessionState>()((set, get) => {
   /** Enter a full-page overlay: clear all three overlay flags + the shared
       reset, then apply the caller's differing field(s) (mutually exclusive). */
@@ -110,7 +118,7 @@ export const useSessionStore = create<SessionState>()((set, get) => {
     selection: EMPTY_SELECTION,
     tagFilter: [],
     panelNodeId: null,
-    panelWidth: 380,
+    panelWidth: defaultPanelWidth(),
     picker: null,
     pendingEdge: null,
     confirm: null,
@@ -161,7 +169,7 @@ export const useSessionStore = create<SessionState>()((set, get) => {
     // Never over the same node's doc page — two live editors would clobber saves.
     openPanel: (nodeId) => set((s) => (s.docNodeId === nodeId ? {} : { panelNodeId: nodeId })),
     closePanel: () => set({ panelNodeId: null }),
-    setPanelWidth: (width) => set({ panelWidth: Math.max(260, Math.min(720, width)) }),
+    setPanelWidth: (width) => set({ panelWidth: clampPanelWidth(width) }),
     openPicker: (picker) => set({ picker }),
     closePicker: ({ cancelEdge }) => set(cancelEdge ? { picker: null, pendingEdge: null } : { picker: null }),
     beginEdge: (fromNodeId) => set({ pendingEdge: { fromNodeId } }),

@@ -12,7 +12,7 @@ export interface PanelResizeHandlers {
 /**
  * Drag handlers for the panel's left-edge resize handle. Pointer capture keeps
  * move/up events routed to the handle, so no global listeners are needed.
- * setPanelWidth clamps to 260–720.
+ * setPanelWidth clamps to a 260px floor and a viewport-relative ceiling.
  */
 export function usePanelResize(): PanelResizeHandlers {
   const activePointerId = useRef<number | null>(null)

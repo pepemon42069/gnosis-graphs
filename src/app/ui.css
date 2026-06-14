@@ -2,6 +2,7 @@
 
 /* One hover/active timing for every interactive control in the app. */
 .ui-button,
+.ui-icon-button,
 .ui-segment-option,
 .ui-input,
 .sidebar-item,
@@ -80,6 +81,31 @@
   color: var(--accent);
   background: var(--chip);
   box-shadow: none;
+}
+
+/* Borderless square icon button (copy, etc.). */
+.ui-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 6px;
+  border: none;
+  border-radius: 6px;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.ui-icon-button:hover {
+  color: var(--accent);
+  background: var(--chip);
+}
+
+.ui-icon-button--copied,
+.ui-icon-button--copied:hover {
+  color: var(--accent);
+  text-shadow: var(--glow);
 }
 
 /* Segmented control: mutually exclusive options (format/view/theme pickers). */
