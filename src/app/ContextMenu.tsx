@@ -67,7 +67,7 @@ export function ContextMenu() {
             key={item.label}
             type="button"
             role="menuitem"
-            className="context-menu-item"
+            className={`context-menu-item${item.danger ? ' context-menu-item--danger' : ''}`}
             onClick={() => {
               close()
               item.action()

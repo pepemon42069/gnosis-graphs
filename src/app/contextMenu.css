@@ -48,3 +48,12 @@
   background: var(--chip);
   color: var(--accent);
 }
+
+.context-menu-item--danger {
+  color: var(--danger);
+}
+
+.context-menu-item--danger:hover {
+  background: var(--danger);
+  color: var(--bg);
+}

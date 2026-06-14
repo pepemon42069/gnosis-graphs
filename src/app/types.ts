@@ -20,6 +20,8 @@ export interface PendingEdge {
 interface ContextMenuItem {
   label: string
   action: () => void
+  /** Destructive entry: rendered in danger red. */
+  danger?: boolean
 }
 
 /** A custom right-click menu (§5): screen position plus its items. */

@@ -7,39 +7,48 @@ import {
 } from '@xyflow/react'
 import { useCallback, type MouseEvent as ReactMouseEvent } from 'react'
 import { useSessionStore } from '../app/store'
-import { runCommand } from '../data/client'
+import { fetchGraphData, runCommand } from '../data/client'
+import { useContentStore } from '../data/react/contentStore'
+import { visitDoc } from '../nav/history'
 import { useNavigation } from '../nav/useNavigation'
 import type { CardNode, RelationEdgeType } from './flowMapping'
 
 export interface CanvasEvents {
-  onPaneClick(event: ReactMouseEvent): void
   onPaneContextMenu(event: ReactMouseEvent | MouseEvent): void
   onNodeClick: NodeMouseHandler<CardNode>
-  onNodeDoubleClick: NodeMouseHandler<CardNode>
-  onEdgeDoubleClick: EdgeMouseHandler<RelationEdgeType>
+  onNodeContextMenu: NodeMouseHandler<CardNode>
   onEdgeContextMenu: EdgeMouseHandler<RelationEdgeType>
   onConnect(connection: Connection): void
   onConnectEnd: OnConnectEnd
 }
 
-/** The §5 event table: double-clicks and the two-stage edge gesture. */
+/** Removes a node from the current graph (its placement only — the node and any
+ *  other placements survive); clears the selection like the keyboard delete. */
+async function removeFromCanvas(graphId: string, nodeId: string): Promise<void> {
+  const { placements } = await fetchGraphData(graphId)
+  const placementIds = placements.filter((p) => p.nodeId === nodeId).map((p) => p.id)
+  if (placementIds.length) await runCommand('remove-from-canvas', { placementIds, edgeIds: [] })
+  useSessionStore.getState().clearSelection()
+}
+
+function confirmDeleteNode(nodeId: string, title: string): void {
+  useSessionStore.getState().requestConfirm({
+    message: `Delete "${title}" from every graph? Its payload will be lost.`,
+    confirmLabel: 'Delete everywhere',
+    isDanger: true,
+    onConfirm: () => {
+      void runCommand('delete-node-everywhere', { nodeId })
+      useSessionStore.getState().clearSelection()
+    },
+  })
+}
+
+/** The §5 event table: right-click menus and the two-stage edge gesture. */
 export function useCanvasEvents(): CanvasEvents {
   const { screenToFlowPosition } = useReactFlow()
   const { drillIn } = useNavigation()
 
-  const onPaneClick = useCallback(
-    (e: ReactMouseEvent) => {
-      if (e.detail !== 2) return
-      useSessionStore.getState().openPicker({
-        mode: 'node',
-        at: screenToFlowPosition({ x: e.clientX, y: e.clientY }),
-        forEdge: false,
-      })
-    },
-    [screenToFlowPosition],
-  )
-
-  // Right-click mirrors the double-click affordance through a menu (§5).
+  // Right-click empty canvas → the node-creation affordance through a menu (§5).
   const onPaneContextMenu = useCallback(
     (e: ReactMouseEvent | MouseEvent) => {
       e.preventDefault()
@@ -70,20 +79,36 @@ export function useCanvasEvents(): CanvasEvents {
     useSessionStore.getState().openPanel(node.id)
   }, [])
 
-  const onNodeDoubleClick = useCallback<NodeMouseHandler<CardNode>>(
-    (_e, node) => drillIn(node.id),
+  // Right-click a node → its controls: editor, sub-graph, canvas removal, delete.
+  const onNodeContextMenu = useCallback<NodeMouseHandler<CardNode>>(
+    (e, node) => {
+      e.preventDefault()
+      const { clientX, clientY } = e
+      const store = useSessionStore.getState()
+      const graphId = store.graphId
+      const record = useContentStore.getState().nodes.get(node.id)
+      const title = record?.title || 'Untitled'
+      store.openContextMenu({
+        x: clientX,
+        y: clientY,
+        items: [
+          { label: 'Open in editor', action: () => visitDoc(node.id) },
+          {
+            label: record?.childGraphId ? 'Open sub-graph' : 'Add sub-graph',
+            action: () => drillIn(node.id),
+          },
+          ...(graphId
+            ? [{ label: 'Remove from canvas', action: () => void removeFromCanvas(graphId, node.id) }]
+            : []),
+          { label: 'Delete everywhere', danger: true, action: () => confirmDeleteNode(node.id, title) },
+        ],
+      })
+    },
     [drillIn],
   )
 
-  const onEdgeDoubleClick = useCallback<EdgeMouseHandler<RelationEdgeType>>((_e, edge) => {
-    useSessionStore.getState().openPicker({
-      mode: 'relationType',
-      target: { type: 'edge', edgeId: edge.id },
-    })
-  }, [])
-
-  // Right-click a relationship → menu to retype or delete it (delete is one
-  // undo step, so no confirm — Ctrl+Z restores it).
+  // Right-click a relationship → menu to retype, reverse or delete it (delete is
+  // one undo step, so no confirm — Ctrl+Z restores it).
   const onEdgeContextMenu = useCallback<EdgeMouseHandler<RelationEdgeType>>((e, edge) => {
     e.preventDefault()
     const { clientX, clientY } = e
@@ -105,6 +130,7 @@ export function useCanvasEvents(): CanvasEvents {
         },
         {
           label: 'Delete relationship',
+          danger: true,
           action: () => void runCommand('delete-edges', { edgeIds: [edge.id] }),
         },
       ],
@@ -153,11 +179,9 @@ export function useCanvasEvents(): CanvasEvents {
   )
 
   return {
-    onPaneClick,
     onPaneContextMenu,
     onNodeClick,
-    onNodeDoubleClick,
-    onEdgeDoubleClick,
+    onNodeContextMenu,
     onEdgeContextMenu,
     onConnect,
     onConnectEnd,

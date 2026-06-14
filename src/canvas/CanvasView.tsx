@@ -92,14 +92,12 @@ function GraphCanvas({ graphId }: { graphId: string }) {
         onEdgesChange={flow.onEdgesChange}
         onNodeDragStart={flow.onNodeDragStart}
         onNodeDragStop={flow.onNodeDragStop}
-        onPaneClick={events.onPaneClick}
         onPaneContextMenu={events.onPaneContextMenu}
         onMoveEnd={(_, viewport) =>
           useSessionStore.getState().setGraphViewport(graphId, viewport)
         }
         onNodeClick={events.onNodeClick}
-        onNodeDoubleClick={events.onNodeDoubleClick}
-        onEdgeDoubleClick={events.onEdgeDoubleClick}
+        onNodeContextMenu={events.onNodeContextMenu}
         onEdgeContextMenu={events.onEdgeContextMenu}
         onConnect={events.onConnect}
         onConnectEnd={events.onConnectEnd}
@@ -120,7 +118,7 @@ function GraphCanvas({ graphId }: { graphId: string }) {
       </ReactFlow>
       {flow.isEmpty && (
         <div className="canvas-empty-hint">
-          Double-click to add a node · right-click for more
+          Right-click to add a node · right-click a node for more
         </div>
       )}
     </div>
