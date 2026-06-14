@@ -36,13 +36,24 @@ function appendCreateNode(rows: PickerRow[], trimmed: string): void {
   else rows.unshift(create)
 }
 
+/** Enter creates the typed node unless the query exactly names an existing one
+ *  (§7 anti-duplicate). A mere fuzzy hit must not hijack a brand-new name —
+ *  otherwise pressing Enter silently re-selects the existing node instead. */
+function createDefaultIndex(rows: PickerRow[], trimmed: string): number {
+  const needle = trimmed.toLowerCase()
+  const exact = rows.findIndex((r) => r.kind === 'node' && r.title.toLowerCase() === needle)
+  if (exact >= 0) return exact
+  const create = rows.findIndex((r) => r.kind === 'createNode')
+  return create >= 0 ? create : 0
+}
+
 function nodeRows(query: string, hits: Hit[], nodes: Map<string, NodeRecord>, kinds: Map<string, KindRecord>): PickerResults {
   const trimmed = query.trim()
   const rows: PickerRow[] = hits
     .filter((hit) => hit.type === 'node')
     .map((hit) => nodeRowFromHit(hit, nodes, kinds))
   if (trimmed) appendCreateNode(rows, trimmed)
-  return { rows, defaultIndex: 0 }
+  return { rows, defaultIndex: trimmed ? createDefaultIndex(rows, trimmed) : 0 }
 }
 
 function relationTypeRows(
