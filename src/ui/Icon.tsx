@@ -108,6 +108,13 @@ const PATHS: Record<string, ReactNode> = {
       <path d="M18 9a9 9 0 0 1-9 9" />
     </>
   ),
+  'spell-check': (
+    <>
+      <path d="m6 16 6-12 6 12" />
+      <path d="M8 12h8" />
+      <path d="m16 20 2 2 4-4" />
+    </>
+  ),
 }
 
 export type IconName = keyof typeof PATHS

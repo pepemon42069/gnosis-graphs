@@ -12,6 +12,7 @@ import { useDocEditor } from './useDocEditor'
  */
 export default function MarkdownDoc({ fileId, content }: { fileId: string; content: string }) {
   const layout = useSessionStore((s) => s.docLayout)
+  const grammarCheck = useSessionStore((s) => s.grammarCheck)
   const editor = useDocEditor('markdown', content, layout !== 'preview')
   // Deferred so the markdown re-parse never sits on the keystroke path.
   const deferredDoc = useDeferredValue(editor.liveDoc)
@@ -29,6 +30,7 @@ export default function MarkdownDoc({ fileId, content }: { fileId: string; conte
             extensions={editor.extensions}
             onReady={editor.onReady}
             onPending={editor.onPending}
+            grammarEnabled={grammarCheck}
           />
         </div>
         <PayloadPreview format="markdown" language={undefined} content={deferredDoc} />

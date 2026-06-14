@@ -76,6 +76,48 @@
   box-shadow: var(--glow);
 }
 
+.panel-collapse-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.panel-collapse-toggle:hover {
+  background: var(--chip);
+  color: var(--accent);
+}
+
+/* Collapsed card header: the node title doubles as the expand affordance. */
+.panel-collapsed-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+  padding: 8px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: none;
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.panel-collapsed-title:hover {
+  background: var(--chip);
+}
+
 /* Inspector-style property rows: muted label left, control right. Field
    explanations live in native title tooltips — no inline ⓘ chrome. */
 .panel-prop {

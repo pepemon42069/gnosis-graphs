@@ -59,6 +59,9 @@ importers:
       fflate:
         specifier: ^0.8.3
         version: 0.8.3
+      harper.js:
+        specifier: ^2.4.0
+        version: 2.4.0
       hono:
         specifier: ^4.12.25
         version: 4.12.25
@@ -1714,6 +1717,9 @@ packages:
   globals@17.6.0:
     resolution: {integrity: sha512-sepffkT8stwnIYbsMBpoCHJuJM5l98FUF2AnE07hfvE0m/qp3R586hw4jF4uadbhvg1ooIdzuu7CsfD2jzCaNA==}
     engines: {node: '>=18'}
+
+  harper.js@2.4.0:
+    resolution: {integrity: sha512-tFSoBJ9MfVoIVYBCrUXS0ovJr6uZ9l4HjGmpaEcsm7Ea/OnBf+LPSwgcVJUfHQVktMmuWyYXoV2ejUU1HnXkug==}
 
   hast-util-to-html@9.0.5:
     resolution: {integrity: sha512-OguPdidb+fbHQSU4Q4ZiLKnzWo8Wwsf5bZfbvu7//a9oTYoqD/fWpe96NuHkoS9h0ccGOTe0C4NGXdtS0iObOw==}
@@ -4194,6 +4200,10 @@ snapshots:
       is-glob: 4.0.3
 
   globals@17.6.0: {}
+
+  harper.js@2.4.0:
+    dependencies:
+      fflate: 0.8.3
 
   hast-util-to-html@9.0.5:
     dependencies:

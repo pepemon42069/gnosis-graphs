@@ -109,6 +109,11 @@
   gap: 2px;
 }
 
+/* Pushes trailing controls (grammar toggle) to the right edge of the toolbar. */
+.doc-toolbar-group--end {
+  margin-left: auto;
+}
+
 .doc-toolbar-button {
   display: inline-flex;
   align-items: center;
@@ -134,6 +139,12 @@
   cursor: default;
 }
 
+/* Toggled-on state (grammar check) — cyan, the established "toolbar on" color. */
+.doc-toolbar-button--active,
+.doc-toolbar-button--active:hover:enabled {
+  color: var(--accent-2);
+}
+
 /* Markdown panes — layout switches hide, never unmount (unsaved-edit safety). */
 
 .doc-split {
@@ -146,6 +157,8 @@
 
 .doc-split > .doc-editor-pane {
   min-width: 0;
+  /* Bound the pane to the row so the editor scrolls in .cm-scroller, not the page. */
+  min-height: 0;
   display: flex;
   border-right: 1px solid var(--border);
 }
@@ -186,6 +199,7 @@
 .doc-code > .doc-editor-pane {
   flex: 1;
   min-width: 0;
+  min-height: 0;
   display: flex;
 }
 

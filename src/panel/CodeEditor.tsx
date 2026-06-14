@@ -9,6 +9,7 @@ import { EditorView, keymap, placeholder } from '@codemirror/view'
 import { useEffect, useRef, useState } from 'react'
 import { runCommand } from '../data/client'
 import type { PayloadFormat } from '../data/types'
+import { grammarLinter } from '../doc/grammarLint'
 import { appHighlightStyle } from './codeHighlight'
 
 const SAVE_DELAY_MS = 500
@@ -37,6 +38,8 @@ interface CodeEditorProps {
   /** false skips the debounced set-file-content write; the host owns persistence
       (graph-source editor — its text is DSL, applied explicitly, not a file). */
   autoSave?: boolean
+  /** Markdown only: toggles Harper's grammar/spell linter in place (no remount). */
+  grammarEnabled?: boolean
 }
 
 /** The one CodeMirror 6 wrapper, lazy-imported. Keyed by file id in PayloadEditor. */
@@ -49,10 +52,12 @@ export default function CodeEditor({
   onReady,
   onPending,
   autoSave = true,
+  grammarEnabled = false,
 }: CodeEditorProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const viewRef = useRef<EditorView | null>(null)
   const [compartment] = useState(() => new Compartment())
+  const [grammarCompartment] = useState(() => new Compartment())
   const seedRef = useRef(content)
   const setupRef = useRef({ extensions, onReady, onPending, autoSave })
 
@@ -81,6 +86,7 @@ export default function CodeEditor({
           keymap.of([...defaultKeymap, ...historyKeymap]),
           syntaxHighlighting(appHighlightStyle, { fallback: true }),
           compartment.of([]),
+          grammarCompartment.of([]),
           EditorView.updateListener.of((update) => {
             if (!update.docChanged) return
             onPending?.(true)
@@ -104,7 +110,7 @@ export default function CodeEditor({
       view.destroy()
       viewRef.current = null
     }
-  }, [compartment, fileId])
+  }, [compartment, grammarCompartment, fileId])
 
   // Format/language switches reconfigure in place: the document (with any
   // pending unsaved edits) and CM undo history survive, matching "raw content
@@ -119,6 +125,14 @@ export default function CodeEditor({
       stale = true
     }
   }, [format, language, compartment])
+
+  // Toggle Harper in place, like the language switch above: the linter only
+  // applies to markdown, and flipping it off clears its diagnostics without
+  // touching the document or undo history.
+  useEffect(() => {
+    const extension = format === 'markdown' && grammarEnabled ? grammarLinter() : []
+    viewRef.current?.dispatch({ effects: grammarCompartment.reconfigure(extension) })
+  }, [format, grammarEnabled, grammarCompartment])
 
   return <div ref={containerRef} className="panel-code-editor" />
 }

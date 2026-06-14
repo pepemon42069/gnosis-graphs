@@ -1,5 +1,7 @@
+import { useEffect, useState } from 'react'
 import { useSessionStore } from '../app/store'
 import { useContentStore } from '../data/react/contentStore'
+import type { NodeRecord } from '../data/types'
 import { PanelHeader } from './PanelHeader'
 import { PayloadEditor } from './PayloadEditor'
 import { usePanelResize } from './usePanelResize'
@@ -15,8 +17,33 @@ export function SidePanel() {
   return (
     <aside className="side-panel" style={{ width }}>
       <div className="side-panel-resize" {...resizeHandlers} />
-      <PanelHeader key={node.id} node={node} />
-      <PayloadEditor node={node} />
+      {/* Keyed by node id: each node remounts fresh as a collapsed reading card. */}
+      <PanelBody key={node.id} node={node} />
     </aside>
+  )
+}
+
+function PanelBody({ node }: { node: NodeRecord }) {
+  const setPayloadView = useSessionStore((s) => s.setPayloadView)
+  const [controlsOpen, setControlsOpen] = useState(false)
+
+  // Fresh mount per node (the key above): default the content to preview.
+  useEffect(() => {
+    setPayloadView('preview')
+  }, [setPayloadView])
+
+  // Opening the controls means you're editing; collapsing returns to reading.
+  // The Content toggle still overrides the view manually without moving this.
+  const toggleControls = () => {
+    const next = !controlsOpen
+    setControlsOpen(next)
+    setPayloadView(next ? 'edit' : 'preview')
+  }
+
+  return (
+    <>
+      <PanelHeader node={node} open={controlsOpen} onToggle={toggleControls} />
+      <PayloadEditor node={node} />
+    </>
   )
 }

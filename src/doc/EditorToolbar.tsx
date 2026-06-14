@@ -1,5 +1,6 @@
 import type { StateCommand } from '@codemirror/state'
 import type { EditorView } from '@codemirror/view'
+import { useSessionStore } from '../app/store'
 import { Icon, type IconName } from '../ui/Icon'
 import {
   insertLink,
@@ -41,6 +42,8 @@ const GROUPS: ToolbarItem[][] = [
 
 /** Markdown formatting toolbar; dispatches pure commands on the live view. */
 export function EditorToolbar({ view }: { view: EditorView | null }) {
+  const grammarCheck = useSessionStore((s) => s.grammarCheck)
+  const setGrammarCheck = useSessionStore((s) => s.setGrammarCheck)
   return (
     <div className="doc-toolbar" role="toolbar" aria-label="Formatting">
       {GROUPS.map((group, i) => (
@@ -62,6 +65,19 @@ export function EditorToolbar({ view }: { view: EditorView | null }) {
           ))}
         </div>
       ))}
+      <div className="doc-toolbar-group doc-toolbar-group--end">
+        <button
+          type="button"
+          className={`doc-toolbar-button pixel${grammarCheck ? ' doc-toolbar-button--active' : ''}`}
+          title="Grammar check"
+          aria-label="Grammar check"
+          aria-pressed={grammarCheck}
+          onMouseDown={(e) => e.preventDefault()}
+          onClick={() => setGrammarCheck(!grammarCheck)}
+        >
+          <Icon name="spell-check" size={14} />
+        </button>
+      </div>
     </div>
   )
 }

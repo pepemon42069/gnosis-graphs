@@ -47,6 +47,8 @@ interface SessionState {
   docLayout: 'write' | 'split' | 'preview'
   /** Left sidebar (persistent chrome, not in the escape() ladder) — sticky across sessions. */
   sidebarOpen: boolean
+  /** Harper grammar check on the markdown doc editor — sticky across sessions, off by default. */
+  grammarCheck: boolean
 
   setGraph(graphId: string, trail: string[]): void
   setGraphViewport(graphId: string, viewport: Viewport): void
@@ -77,6 +79,7 @@ interface SessionState {
   setPayloadView(view: 'edit' | 'preview'): void
   setDocLayout(layout: 'write' | 'split' | 'preview'): void
   setSidebarOpen(open: boolean): void
+  setGrammarCheck(on: boolean): void
   /** Innermost-first dismissal for surfaces without local key handling: panel, then selection. */
   escape(): boolean
 }
@@ -122,6 +125,8 @@ export const useSessionStore = create<SessionState>()((set, get) => {
     docLayout: 'split',
     sidebarOpen:
       typeof localStorage === 'undefined' || localStorage.getItem('gnosis.sidebarOpen') !== '0',
+    grammarCheck:
+      typeof localStorage !== 'undefined' && localStorage.getItem('gnosis.grammarCheck') === '1',
 
     setGraph: (graphId, trail) =>
       set((s) => ({
@@ -180,6 +185,10 @@ export const useSessionStore = create<SessionState>()((set, get) => {
     setSidebarOpen: (sidebarOpen) => {
       localStorage.setItem('gnosis.sidebarOpen', sidebarOpen ? '1' : '0')
       set({ sidebarOpen })
+    },
+    setGrammarCheck: (grammarCheck) => {
+      localStorage.setItem('gnosis.grammarCheck', grammarCheck ? '1' : '0')
+      set({ grammarCheck })
     },
 
     escape: () => {
