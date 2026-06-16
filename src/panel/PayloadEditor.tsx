@@ -1,25 +1,19 @@
-import { lazy, Suspense } from 'react'
-import { useSessionStore } from '../app/store'
 import { runCommand, useFile } from '../data/client'
 import type { NodeRecord } from '../data/types'
+import { visitDoc } from '../nav/history'
 import { CopyButton } from '../ui/CopyButton'
+import { Icon } from '../ui/Icon'
 import { LinkEditor } from './LinkEditor'
 import { PayloadPreview } from './PayloadPreview'
 
-const CodeEditor = lazy(() => import('./CodeEditor'))
-
-const VIEWS = ['edit', 'preview'] as const
-
-/** Picks the per-format editor (§6). CodeMirror is lazy so the canvas bundle stays light. */
+/** Picks the per-format preview (§6). Editing happens in the full-page doc editor. */
 export function PayloadEditor({ node }: { node: NodeRecord }) {
-  const view = useSessionStore((s) => s.payloadView)
-  const setPayloadView = useSessionStore((s) => s.setPayloadView)
   if (node.payload?.kind === 'link') {
     // The link card already is the preview — no toggle.
     return <LinkEditor key={node.id} nodeId={node.id} title={node.title} url={node.payload.url} />
   }
   if (node.payload?.kind === 'file') {
-    return <FilePayload key={node.id} fileId={node.payload.fileId} view={view} setView={setPayloadView} />
+    return <FilePayload key={node.id} nodeId={node.id} fileId={node.payload.fileId} />
   }
   // No payload yet — offer the two ways to give the node content.
   return <PayloadEmpty key={node.id} nodeId={node.id} />
@@ -54,15 +48,8 @@ function PayloadEmpty({ nodeId }: { nodeId: string }) {
   )
 }
 
-function FilePayload({
-  fileId,
-  view,
-  setView,
-}: {
-  fileId: string
-  view: (typeof VIEWS)[number]
-  setView: (view: (typeof VIEWS)[number]) => void
-}) {
+/** Reading view for a file payload: always previews; editing opens the doc page. */
+function FilePayload({ nodeId, fileId }: { nodeId: string; fileId: string }) {
   const file = useFile(fileId)
   if (!file) return null
   return (
@@ -72,34 +59,18 @@ function FilePayload({
         <span className="panel-prop-label">Content</span>
         <div className="panel-payload-bar-actions">
           <CopyButton content={file.content} />
-          <div className="ui-segment pixel panel-view-switch" role="group" aria-label="Payload view">
-            {VIEWS.map((option) => (
-              <button
-                key={option}
-                type="button"
-                aria-pressed={view === option}
-                className={`ui-segment-option${view === option ? ' ui-segment-option--active' : ''}`}
-                onClick={() => setView(option)}
-              >
-                {option}
-              </button>
-            ))}
-          </div>
+          <button
+            type="button"
+            className="ui-button pixel panel-open-editor"
+            aria-label="Edit in editor"
+            title="Edit in editor"
+            onClick={() => visitDoc(nodeId)}
+          >
+            <Icon name="edit" size={14} /> edit
+          </button>
         </div>
       </div>
-      {view === 'preview' ? (
-        <PayloadPreview format={file.format} language={file.language} content={file.content} />
-      ) : (
-        <Suspense fallback={null}>
-          <CodeEditor
-            key={file.id}
-            fileId={file.id}
-            format={file.format}
-            language={file.language}
-            content={file.content}
-          />
-        </Suspense>
-      )}
+      <PayloadPreview format={file.format} language={file.language} content={file.content} />
     </div>
   )
 }

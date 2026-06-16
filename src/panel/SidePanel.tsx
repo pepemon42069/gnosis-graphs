@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useSessionStore } from '../app/store'
 import { useContentStore } from '../data/react/contentStore'
 import type { NodeRecord } from '../data/types'
@@ -24,25 +24,10 @@ export function SidePanel() {
 }
 
 function PanelBody({ node }: { node: NodeRecord }) {
-  const setPayloadView = useSessionStore((s) => s.setPayloadView)
   const [controlsOpen, setControlsOpen] = useState(false)
-
-  // Fresh mount per node (the key above): default the content to preview.
-  useEffect(() => {
-    setPayloadView('preview')
-  }, [setPayloadView])
-
-  // Opening the controls means you're editing; collapsing returns to reading.
-  // The Content toggle still overrides the view manually without moving this.
-  const toggleControls = () => {
-    const next = !controlsOpen
-    setControlsOpen(next)
-    setPayloadView(next ? 'edit' : 'preview')
-  }
-
   return (
     <>
-      <PanelHeader node={node} open={controlsOpen} onToggle={toggleControls} />
+      <PanelHeader node={node} open={controlsOpen} onToggle={() => setControlsOpen((open) => !open)} />
       <PayloadEditor node={node} />
     </>
   )
