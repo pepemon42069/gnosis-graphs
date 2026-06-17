@@ -57,6 +57,9 @@ function GraphCanvas({ graphId }: { graphId: string }) {
     })
     const store = useSessionStore.getState()
     store.setSelection({ nodeIds: [pendingFocusNodeId], edgeIds: [] })
+    // A deliberate jump (search/sidebar/loose-end rescue) opens the view, unlike a
+    // bare canvas click — setSelection alone no longer does.
+    store.openPanel(pendingFocusNodeId)
     store.setPendingFocusNode(null)
   }, [pendingFocusNodeId, flow, setCenter, getZoom])
 
@@ -96,7 +99,7 @@ function GraphCanvas({ graphId }: { graphId: string }) {
         onMoveEnd={(_, viewport) =>
           useSessionStore.getState().setGraphViewport(graphId, viewport)
         }
-        onNodeClick={events.onNodeClick}
+        onNodeDoubleClick={events.onNodeDoubleClick}
         onNodeContextMenu={events.onNodeContextMenu}
         onEdgeContextMenu={events.onEdgeContextMenu}
         onConnect={events.onConnect}

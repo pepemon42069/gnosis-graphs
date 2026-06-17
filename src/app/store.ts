@@ -154,10 +154,16 @@ export const useSessionStore = create<SessionState>()((set, get) => {
       set((s) => ({ graphViewports: { ...s.graphViewports, [graphId]: viewport } })),
     setHomeGraphId: (homeGraphId) => set({ homeGraphId }),
     setSelection: (selection) =>
-      set({
+      set((s) => ({
         selection,
-        panelNodeId: selection.nodeIds.length === 1 ? (selection.nodeIds[0] ?? null) : null,
-      }),
+        // Selecting (click or drag) no longer OPENS the content panel — that is a
+        // deliberate double-click / picker / focus action now, so dragging a node
+        // never pops the view open over the canvas. But dropping the panel's node
+        // from the selection dismisses it, so clicking the canvas or another node
+        // still closes the view.
+        panelNodeId:
+          s.panelNodeId && selection.nodeIds.includes(s.panelNodeId) ? s.panelNodeId : null,
+      })),
     clearSelection: () => set({ selection: EMPTY_SELECTION, panelNodeId: null }),
     toggleTagFilter: (tag) =>
       set((s) => ({

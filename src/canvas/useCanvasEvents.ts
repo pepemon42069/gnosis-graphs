@@ -15,7 +15,7 @@ import type { CardNode, RelationEdgeType } from './flowMapping'
 
 export interface CanvasEvents {
   onPaneContextMenu(event: ReactMouseEvent | MouseEvent): void
-  onNodeClick: NodeMouseHandler<CardNode>
+  onNodeDoubleClick: NodeMouseHandler<CardNode>
   onNodeContextMenu: NodeMouseHandler<CardNode>
   onEdgeContextMenu: EdgeMouseHandler<RelationEdgeType>
   onConnect(connection: Connection): void
@@ -72,10 +72,10 @@ export function useCanvasEvents(): CanvasEvents {
     [screenToFlowPosition],
   )
 
-  // §5 "Click: select; open side panel" — selection flows through RF's select
-  // changes, but re-clicking an already-selected node emits none, so the panel
-  // reopen needs the explicit click.
-  const onNodeClick = useCallback<NodeMouseHandler<CardNode>>((_e, node) => {
+  // Single click only selects (React Flow's select changes drive that); the
+  // content panel is a deliberate double-click, so dragging a node never pops the
+  // view open over the canvas and steals room.
+  const onNodeDoubleClick = useCallback<NodeMouseHandler<CardNode>>((_e, node) => {
     useSessionStore.getState().openPanel(node.id)
   }, [])
 
@@ -180,7 +180,7 @@ export function useCanvasEvents(): CanvasEvents {
 
   return {
     onPaneContextMenu,
-    onNodeClick,
+    onNodeDoubleClick,
     onNodeContextMenu,
     onEdgeContextMenu,
     onConnect,
