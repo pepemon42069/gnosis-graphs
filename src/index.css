@@ -362,6 +362,42 @@ body {
   }
 }
 
+/* CodeMirror lint hover box — Harper grammar/spell (markdown) and JSON parse
+   errors. @codemirror/lint renders this tooltip at document.body with CM's light
+   default surface, so on the dark theme its inherited text lands on a near-white
+   box and all but vanishes. Global, not editor-scoped, because the tooltip lives
+   outside .cm-editor. The light bg sits on the .cm-tooltip WRAPPER, while the lint
+   content is a separate .cm-tooltip-lint <ul> inside it — so target the wrapper
+   that contains the lint list. background + border need !important: CM injects its
+   rule at runtime after this sheet, anchored on generated theme classes we can't
+   target. Inner parts win on a plain descendant selector. */
+.cm-tooltip:has(.cm-tooltip-lint) {
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 6px;
+  box-shadow: var(--shadow-2);
+}
+
+.cm-tooltip-lint .cm-diagnostic {
+  color: var(--text);
+}
+
+.cm-tooltip-lint .cm-diagnosticSource {
+  color: var(--muted);
+}
+
+.cm-tooltip-lint .cm-diagnosticAction {
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.cm-tooltip-lint .cm-diagnosticAction:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 .app {
   height: 100vh;
   display: flex;
